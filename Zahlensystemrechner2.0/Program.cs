@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace Zahlensystemrechner2._0
 {
@@ -10,9 +7,11 @@ namespace Zahlensystemrechner2._0
     {
         static void Main(string[] args)
         {
-            int BinärZahl = Convert.ToInt32(Console.ReadLine());
-            double Erg = Program.BinärinDez(0,BinärZahl);
-            Console.WriteLine(Erg);
+            int DezimalZahl = Convert.ToInt32(Console.ReadLine());
+            int Erg2 = Program.DezinBinär(DezimalZahl,0);
+            //int BinärZahl = Convert.ToInt32(Console.ReadLine());
+            //double Erg = Program.BinärinDez(0, BinärZahl);
+            Console.WriteLine(Erg2);
             Console.ReadLine();
 
         }
@@ -26,17 +25,32 @@ namespace Zahlensystemrechner2._0
             } while (BinärZahl != 0);
             int[] BinärArray = BinärStack.ToArray();
             int length = BinärArray.Length;
-            int y = length+1;
+            int y = length + 1;
             while (y > 1)
             {
                 for (int x = 0; x < length; x++)
                 {
                     y--;
                     int i = BinärArray[y - 1];
-                    Erg += i * Math.Pow(2,x);
+                    Erg += i * Math.Pow(2, x);
                 }
             }
             return Erg;
+        }
+        static int DezinBinär(int DezimalZahl, int Erg2)
+        {
+            List<int> DezimalList = new List<int>();
+            do
+            {
+                DezimalList.Add(DezimalZahl % 2);
+                DezimalZahl /= 2;
+            } while (DezimalZahl != 0);
+            int[] DezimalArray = DezimalList.ToArray();
+            for (int i = 0; i < DezimalArray.Length; i++)
+            {
+                Erg2 += DezimalArray[i] * Convert.ToInt32(Math.Pow(10, DezimalArray.Length-i-1));
+            }
+            return Erg2;
         }
     }
 }
