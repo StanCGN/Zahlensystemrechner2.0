@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace Zahlensystemrechner2._0
 {
@@ -10,13 +11,13 @@ namespace Zahlensystemrechner2._0
         static void Main(string[] args)
         {
             int BinärZahl = Convert.ToInt32(Console.ReadLine());
-            Program.BinärinDez(0,BinärZahl);
+            double Erg = Program.BinärinDez(0,BinärZahl);
+            Console.WriteLine(Erg);
+            Console.ReadLine();
 
         }
-        static void BinärinDez(int Erg, int BinärZahl)
+        static double BinärinDez(double Erg, int BinärZahl)
         {
-            //int length = 0;
-            //int z;
             var BinärStack = new Stack<int>(32);
             do
             {
@@ -25,19 +26,17 @@ namespace Zahlensystemrechner2._0
             } while (BinärZahl != 0);
             int[] BinärArray = BinärStack.ToArray();
             int length = BinärArray.Length;
-            for (int y = length; y > 0; y--)
+            int y = length+1;
+            while (y > 1)
             {
-                for (int x = 0; x < length-1; x++)
+                for (int x = 0; x < length; x++)
                 {
-                   int i = BinärArray[y-1];
-                    Erg += i * 2 ^ x;
-
+                    y--;
+                    int i = BinärArray[y - 1];
+                    Erg += i * Math.Pow(2,x);
                 }
             }
-            Console.WriteLine("länge ist" + length);
-            Console.WriteLine(Erg);
-            Console.ReadLine();
-            //return Erg;
+            return Erg;
         }
     }
 }
