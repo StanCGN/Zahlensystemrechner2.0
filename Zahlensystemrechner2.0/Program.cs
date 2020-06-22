@@ -10,28 +10,68 @@ namespace Zahlensystemrechner2._0
             Console.WriteLine("Bitte geben sie eine Rechnung ein:");
 
             String Eingabe = Console.ReadLine();
-            Zerlegen(Eingabe);
+            Char[] RechenOperationen = ZerlegenRechenOperationen(Eingabe);
+            String[] Operatoren = ZerlegenOperatoren(Eingabe);
+            
+            for(int i = 0; i < Operatoren.Length - 1; i++)      // Alle zahlen von String in int Arrays umwandeln
+            {
+                InIntVerweisen(Operatoren[i]);
+            }
+
 
             Console.ReadKey();
         }
 
-        static void Zerlegen(String Eingabe) 
-        {
-            int laenge = Eingabe.Length;
-            PräfixErkennen(Eingabe);
-
-            for (int zaehler = laenge; zaehler > 0; zaehler--)
+        static Char[] ZerlegenRechenOperationen(String Eingabe)         // Zuerst wird die Rechnung nach den Operationen durchsucht und diese gespeichert
+        {                                               
+            int anzahl = 0;
+            for (int i = 0; i < Eingabe.Length - 1; i++)                // Anzahl an Operationen wird gezählt
             {
-                
+                if (Eingabe[i] == '+' || Eingabe[i] == '-' || Eingabe[i] == '*' || Eingabe[i] == '/' || Eingabe[i] == 'x' || Eingabe[i] == ':')
+                {
+                    anzahl++;
+                }
             }
+
+            Char[] RechenOperationen = new Char[anzahl];                // Dann wird ein CharArray mit der passenden länge erstellt.
+            anzahl = 0;
+            for (int i = 0; i < Eingabe.Length - 1; i++)
+            {
+                if (Eingabe[i] == '+' || Eingabe[i] == '-' || Eingabe[i] == '*' || Eingabe[i] == '/' || Eingabe[i] == 'x' || Eingabe[i] == ':')
+                {
+                    RechenOperationen[anzahl] = Eingabe[i];
+                    anzahl++;
+                }
+            }
+            return RechenOperationen;
         }
 
-        static void PräfixErkennen(String Eingabe)
+        static String[] ZerlegenOperatoren(String Eingabe)              // Die Eingabe wird nach Zahlen aufgeteilt und diese gespeichert.
         {
-            HexStringInInt(Eingabe);
+            String[] Operatoren = Eingabe.Split(new Char[] {' ', '+' , '-' , '*' , '/' , 'x' , ':'});
+            return Operatoren;
         }
 
-        static void HexStringInInt (String HexString)
+        static int InIntVerweisen(String Eingabe)
+        {
+            int rueckgabe = 0;
+            if (Eingabe[0]=='b'||Eingabe[0]=='B'||Eingabe[0] == 'd' || Eingabe[0] == 'D'||Eingabe[0]=='o'||Eingabe[0]=='O')
+            {
+                rueckgabe = BinOktDezInInt(Eingabe);   
+            }
+            else if (Eingabe[0] == 'h' || Eingabe[0] == 'H')
+            {
+                rueckgabe = HexStringInInt(Eingabe);
+            }
+            else
+            {
+                Console.WriteLine("Error!");
+            }
+
+            return rueckgabe;
+        }
+
+        static int HexStringInInt (String HexString)
         {
             Console.WriteLine(HexString);
 
@@ -75,13 +115,14 @@ namespace Zahlensystemrechner2._0
                 }
                 Console.WriteLine(zahl);
                 hexAusdruck[zaehler-1] = zahl;
+                return zahl;
             }
             HexInDez(hexAusdruck);
         }
 
-        static void BinOktDezInInt (String Zahlenstring)
+        static int BinOktDezInInt (String Zahlenstring)
         {
-
+            return 0;
         }
 
         static void OktInDez()
