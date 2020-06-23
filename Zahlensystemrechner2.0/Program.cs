@@ -10,18 +10,30 @@ namespace Zahlensystemrechner2._0
             Console.WriteLine("Bitte geben sie eine Rechnung ein:");
 
             String Eingabe = Console.ReadLine();
-            Char[] RechenOperationen = ZerlegenRechenOperationen(Eingabe);
+            Char rechenZeichen = RechenOperation(Eingabe);
             String[] Operatoren = ZerlegenOperatoren(Eingabe);
-            
-            for(int i = 0; i < Operatoren.Length - 1; i++)      // Alle zahlen von String in int Arrays umwandeln
-            {
-                InIntVerweisen(Operatoren[i]);
-            }
+
+            int[] operatorEins = InIntVerweisen(Operatoren[0]);
+            int[] operatorZwei = InIntVerweisen(Operatoren[1]);
+                
 
 
             Console.ReadKey();
         }
 
+        static char RechenOperation(String Eingabe) 
+        {
+            char rechenzeichen = ' ';
+            for (int i = 0; i < Eingabe.Length-1; i++)
+            {
+                if (Eingabe[i] == '+' || Eingabe[i] == '-' || Eingabe[i] == '*' || Eingabe[i] == '/' || Eingabe[i] == 'x' || Eingabe[i] == ':')
+                {
+                    rechenzeichen = Eingabe[i];
+                    break;
+                }
+            }
+            return rechenzeichen;
+        }
         static Char[] ZerlegenRechenOperationen(String Eingabe)         // Zuerst wird die Rechnung nach den Operationen durchsucht und diese gespeichert
         {                                               
             int anzahl = 0;
@@ -52,9 +64,10 @@ namespace Zahlensystemrechner2._0
             return Operatoren;
         }
 
-        static int InIntVerweisen(String Eingabe)
+        static int[] InIntVerweisen(String Eingabe)
         {
-            int rueckgabe = 0;
+
+            int[] rueckgabe = new int[Eingabe.Length];
             if (Eingabe[0]=='b'||Eingabe[0]=='B'||Eingabe[0] == 'd' || Eingabe[0] == 'D'||Eingabe[0]=='o'||Eingabe[0]=='O')
             {
                 rueckgabe = BinOktDezInInt(Eingabe);   
@@ -71,14 +84,11 @@ namespace Zahlensystemrechner2._0
             return rueckgabe;
         }
 
-        static int HexStringInInt (String HexString)
-        {
-            Console.WriteLine(HexString);
-
+        static int[] HexStringInInt (String HexString)
+        { 
             int zahl = 0;
-            int laenge = HexString.Length;
-            int[] hexAusdruck = new int[laenge];
-            for (int zaehler = laenge; zaehler > 0; zaehler --)
+            int[] hexAusdruck = new int[HexString.Length];
+            for (int zaehler = 0; zaehler < HexString.Length; zaehler++)
             {
                 Console.WriteLine(zaehler);
                 char c = HexString[zaehler-1];
@@ -115,14 +125,21 @@ namespace Zahlensystemrechner2._0
                 }
                 Console.WriteLine(zahl);
                 hexAusdruck[zaehler-1] = zahl;
-                return zahl;
             }
-            HexInDez(hexAusdruck);
+            return hexAusdruck;
         }
 
-        static int BinOktDezInInt (String Zahlenstring)
+        static int[] BinOktDezInInt (String Zahlenstring)
         {
-            return 0;
+            int zahl = 0;
+            int[] binOktDezAusdruck = new int[Zahlenstring.Length];
+            for (int zaehler = 0; zaehler < Zahlenstring.Length; zaehler++)
+            {
+                char c = Zahlenstring[zaehler - 1];
+                zahl = c - '0';
+                binOktDezAusdruck[zaehler - 1] = zahl;
+            }
+            return binOktDezAusdruck;
         }
 
         static void OktInDez()
